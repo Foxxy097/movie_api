@@ -1,8 +1,73 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8" />
+  <title>myFlix</title>
 </head>
 <body>
+  <table>
+      <tr>
+          <th>Request</th>
+          <th>URL</th>
+          <th>HTTP Method</th>
+          <th>Response</th>
+      </tr>
+      <tr>
+        <td>Show all movies</td>
+        <td>/movies</td>
+        <td>GET</td>
+        <td>returns all movies</td>
+      </tr>
+      <tr>
+        <td>data to a single movie Title</td>
+        <td>/movies/:title </td>
+        <td>GET</td>
+        <td>returns movie Title</td>
+      </tr>
+      <tr>
+        <td>data to a genre</td>
+        <td>/movie/genre/:genreName</td>
+        <td>GET</td>
+        <td>returns data to genre</td>
+      </tr>
+      <tr>
+        <td>data to director of the movie</td>
+        <td>movies/directors/:directorName</td>
+        <td>GET</td>
+        <td>returns data to director</td>
+      </tr>
+      <tr>
+        <td>Add new User</td>
+        <td>/users</td>
+        <td>POST</td>
+        <td>creating new user</td>
+      </tr>
+      <tr>
+        <td>update user name</td>
+        <td>/user/:id</td>
+        <td>PUT</td>
+        <td>update username</td>
+      </tr>
+      <tr>
+        <td>add favorite Movie</td>
+        <td>/users/:id/:movieTitle</td>
+        <td>POST</td>
+        <td>add favorit Movie to list</td>
+      </tr>
+      <tr>
+        <td>removing favorit movie from list</td>
+        <td>/users/:id/:movieTitle</td>
+        <td>DELETE</td>
+        <td>removes movie from favorit list</td>
+      </tr>
+      <tr>
+        <td>deregister existing user</td>
+        <td>/users/:id</td>
+        <td>DELETE</td>
+        <td>deleting all information of the user</td>
+      </tr>
+    </table>
 </body>
-</hmtl>
+
+</html>
