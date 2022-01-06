@@ -11,67 +11,75 @@ app.use(bodyParser.json());
 let users =[
   { id: 1,
     name:'Bob',
-    favoritMovies:[]
+    favoriteMovies:[]
   },
 
   { id: 2,
     name:'Sarah',
-    favoritMovies:['Encanto']
+    favoriteMovies:['Encanto']
   }
 
-]
-
-let movies = [
-  { title: 'Encanto',
-    genre: 'Musical, comedy',
-    director:'Byron Howard, Jared Bush'},
-
-  { title: 'Spider-Man: No Way Home ',
-    genre: 'Action',
-    director:'Jon Watts'},
-
-  { title: 'Shang-Chi and the Legend of the Ten Rings',
-    genre:'Action, fantasy',
-    director:'Destin Daniel Cretton'},
-
-  { title: 'Eternals',
-    genre:'Action',
-    director:'Kevin Feige, Nate Moore'},
-
-  { title: 'Last Christmas',
-    genre:'Romance, Comedy',
-    director:'Paul Feig'},
-
-  { title: 'Doctor Strange',
-    genre:'Action',
-    director:'Scott Derrickson'},
-
-  { title: 'Doctor Strange 2',
-    genre:'Action',
-    director:'Sam Raimi'},
-
-  { title: 'Grinch',
-    genre:'fantasy',
-    director:'Ron Howard'},
-
-  { title: 'The Witches',
-    genre:'Fantasy, comedy',
-    director:'Robert Zemeckis'},
-
-  { title: 'Jumanji',
-    genre:'Fantasy',
-    director:'Joe Johnston'}
 ];
 
+let movies = [
+  { Title: 'Encanto',
+    Genre: { Name: 'Musical' },
+    Director:{ Name: 'Byron Howard'},
+  },
+  { title: 'Spider-Man: No Way Home ',
+    Genre: { Name:'Action'},
+    Director:{ Name:'Jon Watts'}
+  },
+
+  { title: 'Shang-Chi and the Legend of the Ten Rings',
+    Genre: { Name:'Action, fantasy'},
+    Director:{ Name:'Destin Daniel Cretton'}
+  },
+
+  { title: 'Eternals',
+    Genre: { Name:'Action'},
+    Director:{ Name: 'Kevin Feige, Nate Moore'}
+  },
+
+  { title: 'Last Christmas',
+    Genre: { Name:'Romance, Comedy'},
+    Director:{ Name: 'Paul Feig'}
+  },
+
+  { title: 'Doctor Strange',
+    Genre: { Name:'Action'},
+    Director:{ Name: 'Scott Derrickson'}
+  },
+
+  { title: 'Doctor Strange 2',
+    Genre: { Name:'Action'},
+    Director:{ Name: 'Sam Raimi'}
+  },
+
+  { title: 'Grinch',
+    Genre: { Name:'fantasy'},
+    Director:{ Name: 'Ron Howard'}
+  },
+
+  { title: 'The Witches',
+    Genre: { Name:'Fantasy, comedy'},
+    Director:{ Name: 'Robert Zemeckis'}
+  },
+
+  { title: 'Jumanji',
+    Genre: { Name:'Fantasy'},
+    Director:{ Name: 'Joe Johnston'}
+  }
+];
 
 // CREATE
-app.post('/users', (req, res) ==> {
+app.post('/users', (req, res) => {
   const newUser = req.body;
 
   if (newUser.name) {
     newUser.id = uuid.v4();
-    user.push(newUser);
-    res.status(201).json(newUser):
+    users.push(newUser);
+    res.status(201).json(newUser);
   } else {
     res.status(400).send('users need names')
   }
@@ -79,7 +87,7 @@ app.post('/users', (req, res) ==> {
 })
 
 // UPDATE
-app.post('/users/:id', (req, res) ==> {
+app.put('/users/:id', (req, res) => {
   const{ id } = req.params;
   const updatedUser = req.body;
 
@@ -94,7 +102,7 @@ app.post('/users/:id', (req, res) ==> {
 })
 
 //CREATE
-app.post('/users/:id/:movieTitle' (req, res) =>{
+app.post('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
@@ -108,7 +116,7 @@ app.post('/users/:id/:movieTitle' (req, res) =>{
 })
 
 //DELETE
-app.delete('/users/:id/:movieTitle' (req, res) =>{
+app.delete('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
@@ -122,7 +130,7 @@ app.delete('/users/:id/:movieTitle' (req, res) =>{
 })
 
 //DELETE
-app.delete('/users/:id' (req, res) =>{
+app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
 
   let user = users.find( user => user.id == id );
@@ -136,14 +144,14 @@ app.delete('/users/:id' (req, res) =>{
 })
 
 //READ
-app.get('/movies', (req, res) ==>{
+app.get('/movies', (req, res) => {
   res.status(200).json(movies);
 })
 
 //READ
-app.get('/movies/:title', (req, res) ==>{
-  const{ title } = req.params;
-  const movie = movies.find( movie => movie.Title === title);
+app.get('/movies/:title', (req, res) => {
+  const title = req.params.title;
+  const movie = movies.find( movie => movie.Title === title );
 
   if (movie) {
     res.status(200).json(movie);
@@ -153,7 +161,7 @@ app.get('/movies/:title', (req, res) ==>{
 })
 
 //READ
-app.get('/movies/genre/:genreName', (req, res) ==>{
+app.get('/movies/genre/:genreName', (req, res) => {
   const{ genreName } = req.params;
   const genre = movies.find( movie => movie.Genre.Name === genreName ).Genre;
 
@@ -165,7 +173,7 @@ app.get('/movies/genre/:genreName', (req, res) ==>{
 })
 
 //READ
-app.get('/movies/directors/:directorName', (req, res) ==>{
+app.get('/movies/director/:directorName', (req, res) => {
   const{ directorName } = req.params;
   const director = movies.find( movie => movie.Director.Name === directorName ).Director;
 
@@ -177,6 +185,7 @@ app.get('/movies/directors/:directorName', (req, res) ==>{
 })
 
 
+
 //app.get('/', (req, res) => {
 //  res.send('My Top 10 Movies!');
 //});
@@ -186,11 +195,11 @@ app.get('/movies/directors/:directorName', (req, res) ==>{
 //});
 
 
-//app.use(express.static('public'));
+app.use(express.static('public'));
 
-//app.get('/documentation', (req, res) => {
-//  res.sendFile('public/documentation.html', { root:__dirname });
-//});
+app.get('/documentation', (req, res) => {
+res.sendFile('public/documentation.html', { root:__dirname });
+});
 
 
 
