@@ -16,6 +16,10 @@ const app = express();
 app.use(morgan('common'));
 app.use(bodyParser.json());
 
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
+
 let users =[
   { id: 1,
     name:'Bob',
@@ -154,7 +158,7 @@ app.put('/users/:Username', (req, res) => {
 });
 
 //CREATE
-app.post('/users/:id/:movieTitle', (req, res) => {
+app.post('/users/:id/:movieTitle', passport.authenticate('jwt', { session: false }), (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
@@ -168,7 +172,7 @@ app.post('/users/:id/:movieTitle', (req, res) => {
 })
 
 //DELETE
-app.delete('/users/:id/:movieTitle', (req, res) => {
+app.delete('/users/:id/:movieTitle', passport.authenticate('jwt', { session: false }), (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
@@ -196,7 +200,7 @@ app.delete('/users/:id/:movieTitle', (req, res) => {
 //})
 
 // Delete a user by username
-app.delete('/users/:Username', (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
@@ -212,12 +216,12 @@ app.delete('/users/:Username', (req, res) => {
 });
 
 //READ
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.status(200).json(movies);
 })
 
 //READ
-app.get('/movies/:title', (req, res) => {
+app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
   const title = req.params.title;
   const movie = movies.find( movie => movie.Title === title );
 
@@ -229,7 +233,7 @@ app.get('/movies/:title', (req, res) => {
 })
 
 //READ
-app.get('/movies/genre/:genreName', (req, res) => {
+app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), (req, res) => {
   const{ genreName } = req.params;
   const genre = movies.find( movie => movie.Genre.Name === genreName ).Genre;
 
@@ -241,7 +245,7 @@ app.get('/movies/genre/:genreName', (req, res) => {
 })
 
 //READ
-app.get('/movies/director/:directorName', (req, res) => {
+app.get('/movies/director/:directorName', passport.authenticate('jwt', { session: false }), (req, res) => {
   const{ directorName } = req.params;
   const director = movies.find( movie => movie.Director.Name === directorName ).Director;
 
@@ -253,7 +257,7 @@ app.get('/movies/director/:directorName', (req, res) => {
 })
 
 // Add a movie to a user's list of favorites
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
      $push: { FavoriteMovies: req.params.MovieID }
    },
