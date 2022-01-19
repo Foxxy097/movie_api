@@ -23,8 +23,7 @@ require('./passport');
 let users =[
   { id: 1,
     name:'Bob',
-    favoriteMovies:[]
-  },
+    favoriteMovies:[] },
 
   { id: 2,
     name:'Sarah',
