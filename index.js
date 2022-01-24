@@ -1,87 +1,25 @@
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const app = express();
 const mongoose = require('mongoose');
-const Models = require ('./models.js');
+const Models = require('./models.js');
+
 
 const Movies = Models.Movie;
 const Users = Models.User;
 
 mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true, useUnifiedTopology: true });
 
-const express = require('express');
-  morgan = require('morgan');
-  bodyParser = require('body-parser');
-  uuid = require('uuid')
-
-const app = express();
-
-app.use(morgan('common'));
 app.use(bodyParser.json());
+
+const cors = require('cors');
+app.use(cors());
 
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
-
-let users =[
-  { id: 1,
-    name:'Bob',
-    favoriteMovies:[] },
-
-  { id: 2,
-    name:'Sarah',
-    favoriteMovies:['Encanto']
-  }
-
-];
-
-let movies = [
-  { Title: 'Encanto',
-    Genre: { Name: 'Musical' },
-    Director:{ Name: 'Byron Howard'},
-  },
-  { title: 'Spider-Man: No Way Home ',
-    Genre: { Name:'Action'},
-    Director:{ Name:'Jon Watts'}
-  },
-
-  { title: 'Shang-Chi and the Legend of the Ten Rings',
-    Genre: { Name:'Action, fantasy'},
-    Director:{ Name:'Destin Daniel Cretton'}
-  },
-
-  { title: 'Eternals',
-    Genre: { Name:'Action'},
-    Director:{ Name: 'Kevin Feige, Nate Moore'}
-  },
-
-  { title: 'Last Christmas',
-    Genre: { Name:'Romance, Comedy'},
-    Director:{ Name: 'Paul Feig'}
-  },
-
-  { title: 'Doctor Strange',
-    Genre: { Name:'Action'},
-    Director:{ Name: 'Scott Derrickson'}
-  },
-
-  { title: 'Doctor Strange 2',
-    Genre: { Name:'Action'},
-    Director:{ Name: 'Sam Raimi'}
-  },
-
-  { title: 'Grinch',
-    Genre: { Name:'fantasy'},
-    Director:{ Name: 'Ron Howard'}
-  },
-
-  { title: 'The Witches',
-    Genre: { Name:'Fantasy, comedy'},
-    Director:{ Name: 'Robert Zemeckis'}
-  },
-
-  { title: 'Jumanji',
-    Genre: { Name:'Fantasy'},
-    Director:{ Name: 'Joe Johnston'}
-  }
-];
+app.use(passport.initialize());
 
 // CREATE
 app.post('/users', (req, res) => {
