@@ -35,6 +35,10 @@ app.use(passport.initialize());
 
 const { check, validationResult } = require('express-validator');
 
+app.get ('/', (req, res) => {
+res.send('Welcome to my App!');
+});
+
 // CREATE
 app.post('/users',
 // Validation logic here for request
