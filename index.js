@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const Models = require('./models.js');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
+require('dotenv').config({path: path.join(__dirname, '.env')});
 
 
 const Movies = Models.Movie;
