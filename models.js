@@ -35,7 +35,7 @@ userSchema.statics.hashPassword = (password) => {
   };
 
 // this creates collections called db.movies and db.users (plurals and lower case)
-let Movie = mongoose.model('myMovie', movieSchema);
+let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);
 
 // need to be imported into index.js
