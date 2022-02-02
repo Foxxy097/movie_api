@@ -46,8 +46,8 @@ app.get('/movies',
 passport.authenticate('jwt', { session: false }),
 (req, res) => {
   Movies.find()
-    .then((movies) => {
-      res.status(201).json(movies);
+    .then((movie) => {
+      res.status(201).json(movie);
     })
     .catch((err) => {
       console.error(err);
@@ -57,8 +57,8 @@ passport.authenticate('jwt', { session: false }),
 // 2.Return data about a single movie by title to the user
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ Title: req.params.Title })
-    .then((movies) => {
-      res.json(movies);
+    .then((movie) => {
+      res.json(movie);
     })
     .catch((err) => {
       console.error(err);
@@ -68,8 +68,8 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 // 3.Return data about a genre (description) by name/title (e.g., “Thriller”)
 app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.name })
-    .then((movies) => {
-      res.json(movies);
+    .then((movie) => {
+      res.json(movie);
     })
     .catch((err) => {
       console.error(err);
@@ -80,8 +80,8 @@ app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }),
 // 4.Return data about a director (bio, birth year, death year) by name
 app.get('/movies/director/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Director.Name': req.params.name })
-    .then((movies) => {
-      res.json(movies);
+    .then((movie) => {
+      res.json(movie);
     })
     .catch((err) => {
       console.error(err);
