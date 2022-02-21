@@ -198,37 +198,81 @@ app.put(
       }
     });
   });
-// 7. Add a movie to a user's list of favorites
-app.post('/users/:Username/movies/:ObjectId', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, {
-     $push: { Favorites: req.params.ObjectId }
-   },
-   { new: true }, // This line makes sure that the updated document is returned
-  (err, updatedUser) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    } else {
-      res.json(updatedUser);
-    }
-  });
-});
-// 8.Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later)
-app.delete('/users/:Username/movies/:ObjectId, passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, {
-     $pull: { Favorites: req.params.ObjectId }
-   },
-   { new: true }, // This line makes sure that the updated document is returned
-  (err, updatedUser) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    } else {
-      res.json(updatedUser);
-    }
-  });
-});
-// 9. Delete user by username
+  
+// Add a movie to a user's list of favorites
+app.post('/users/:Username/movies/:MovieID',
+    passport.authenticate('jwt', { session: false }),
+    [
+        param('MovieID', 'MovieId must be valid ObjectId').custom(value => {
+            return mongoose.Types.ObjectId.isValid(value);
+        })
+    ],
+    (req, res) => {
+
+        // check the validation object for errors
+        let errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        Users.findOneAndUpdate(
+            { Username: req.params.Username },
+            {
+                $push: { FavoriteMovies: req.params.MovieID }
+            },
+            { new: true }, // This line makes sure that the updated document is returned
+        )
+            .then((user) => {
+                if (user === null){
+                    res.status(404).send("No user found")
+                } else {
+                    res.json(user);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+    });
+
+// Remove a movie to a user's list of favorites
+app.delete('/users/:Username/movies/:MovieID',
+    passport.authenticate('jwt', { session: false }),
+    [
+        param('MovieID', 'MovieId must be valid ObjectId').custom(value => {
+            return mongoose.Types.ObjectId.isValid(value);
+        })
+    ],
+    (req, res) => {
+
+        // check the validation object for errors
+        let errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        Users.findOneAndUpdate(
+            { Username: req.params.Username },
+            {
+                $pull: { FavoriteMovies: req.params.MovieID }
+            },
+            { new: true }, // This line makes sure that the updated document is returned
+        )
+            .then((user) => {
+                if (user === null){
+                    res.status(404).send("No user found")
+                } else {
+                    res.json(user);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+    });
+// Delete user by username
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
