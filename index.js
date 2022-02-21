@@ -56,6 +56,10 @@ app.use(
 //express validator
 const { check, validationResult } = require("express-validator");
 
+app.get('/', passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+    res.send('Welcome to my myFlix App!');
+
 // Return a list of ALL movies to the user
 app.get(
   "/movies",
