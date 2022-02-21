@@ -42,15 +42,16 @@ app.get ('/', (req, res) => {
   res.send('Welcome to myMovies!');
 });
 // 1. Get all movies
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.find()
-    .then(function(movies) {
-      res.status(201).json(movies);
-    })
-    .catch(function (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
+app.get('/movies', passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+    Movies.find()
+        .then((movie) => {
+            res.json(movie);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 // 2.Return data about a single movie by title to the user
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -198,7 +199,7 @@ app.put(
       }
     });
   });
-  
+
 // Add a movie to a user's list of favorites
 app.post('/users/:Username/movies/:MovieID',
     passport.authenticate('jwt', { session: false }),
