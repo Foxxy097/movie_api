@@ -35,7 +35,6 @@ const passport = require('passport');
 require('./passport');
 const {param} = require("express-validator/src/middlewares/validation-chain-builders");
 
-const { check, validationResult } = require('express-validator');
 
 // default text response when at /
 app.get ('/', (req, res) => {
