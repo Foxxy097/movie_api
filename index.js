@@ -198,10 +198,10 @@ app.put(
       }
     });
   });
-//  Add a movie to a user's list of favorites
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+// 7. Add a movie to a user's list of favorites
+app.post('/users/:Username/Favorites/:ObjectId', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
-     $push: { FavoriteMovies: req.params.MovieID }
+     $push: { Favorites: req.params.ObjectId }
    },
    { new: true }, // This line makes sure that the updated document is returned
   (err, updatedUser) => {
@@ -213,18 +213,18 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
     }
   });
 });
-// Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later)
-app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+// 8.Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later)
+app.delete('/users/:Username/Favorites/:ObjectId', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
-     $pull: { FavoriteMovies: req.params.MovieID }
+     $pull: { Favorites: req.params.ObjectId }
    },
    { new: true }, // This line makes sure that the updated document is returned
-  (err, removeFavorite) => {
+  (err, updatedUser) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error: ' + err);
     } else {
-      res.json(removeFavorite);
+      res.json(updatedUser);
     }
   });
 });
