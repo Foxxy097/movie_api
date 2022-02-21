@@ -199,7 +199,7 @@ app.put(
     });
   });
 // 7. Add a movie to a user's list of favorites
-app.post('/users/:Username/FavoriteMovies/:ObjectId', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post('/users/:Username/movies/:ObjectId', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
      $push: { Favorites: req.params.ObjectId }
    },
@@ -214,7 +214,7 @@ app.post('/users/:Username/FavoriteMovies/:ObjectId', passport.authenticate('jwt
   });
 });
 // 8.Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later)
-app.delete('/users/:Username/FavoriteMovies/:ObjectId', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.delete('/users/:Username/movies/:ObjectId, passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
      $pull: { Favorites: req.params.ObjectId }
    },
