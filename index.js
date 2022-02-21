@@ -33,7 +33,7 @@ app.use(cors({
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
-app.use(passport.initialize());
+const {param} = require("express-validator/src/middlewares/validation-chain-builders");
 
 const { check, validationResult } = require('express-validator');
 
@@ -273,7 +273,7 @@ app.delete('/users/:Username/movies/:MovieID',
                 res.status(500).send('Error: ' + err);
             });
     });
-    
+
 // Delete user by username
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
