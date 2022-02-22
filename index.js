@@ -2,10 +2,11 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
+const { check, validationResult } = require('express-validator');
 const mongoose = require('mongoose');
+const uuid = ('uuid');
+
 const Models = require('./models.js');
-
-
 const Movies = Models.Movie;
 const Users = Models.User;
 
@@ -35,7 +36,6 @@ const passport = require('passport');
 require('./passport');
 app.use(passport.initialize());
 
-const { check, validationResult } = require('express-validator');
 
 // default text response when at /
 app.get ('/', (req, res) => {
@@ -88,16 +88,7 @@ app.get('/movies/director/:name', passport.authenticate('jwt', { session: false 
 });
 
 //5. Add a user
-/* We’ll expect JSON in this format
-{
-  ID: Integer,
-  Username: String,
-  Password: String,
-  Email: String,
-  Birthday: Date
-}*/
-app.post(
-  '/users/',
+app.post('/users',
   [
     check('Username', 'Username is required').isLength({min: 2}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -243,6 +234,18 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
       res.status(500).send('Error: ' + err);
     });
 });
+
+//get documentation
+app.get('/documentation', (req, res) => {
+  res.sendFile('public/documentation.html', { root: __dirname });
+});
+
+//error handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('An error has been detected')
+});
+
 // look for a pre-configured port number in the environment variable, and, if nothing is found, sets the port to a certain port number
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
