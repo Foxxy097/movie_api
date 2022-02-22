@@ -9,19 +9,8 @@ uuid = require("uuid");
 
 const movies = Models.Movie;
 const users = Models.User;
-let mongouri = process.env.CONNECTION_URI;
 
-// mongoose.connect('mongodb://localhost:5500/dbname', { useNewUrlParser: true, useUnifiedTopology: true });
-
-// mongoose.connect("mongodb://0.0.0.0:27017/myFlixDB", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-
-mongoose.connect(mongouri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true });
 
 //morgan
 app.use(morgan("common"));
