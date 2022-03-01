@@ -23,13 +23,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-
-let auth = require('./auth')(app);
-
 const passport = require('passport');
 require('./passport');
 
-
+let auth = require('./auth')(app);
 
 app.use(express.static('public'));
 app.use(morgan('common'));
