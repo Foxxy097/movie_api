@@ -1,35 +1,36 @@
-const express = require('express'), //express framework
-      app = express(),      //express framework beeing used
-      bodyParser = require('body-parser'),
-      uuid = require('uuid'),
-      morgan = require('morgan'),
-      mongoose = require('mongoose'),
-      Models = require('./models.js'),
-      Movies = Models.Movie,  //model name in models.js
-      Users = Models.User; //model name in models.js
-      // all const are being written one after another and seprated by a colon to avoid re-writting "const" multiple times
+const express = require('express'),
+      morgan = require('morgan');
+const bodyParser = require('body-parser');
+const uuid = ('uuid');
+const app = express();
+const { check, validationResult } = require('express-validator');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
+
+const Models = require('./models.js');
+const Movies = Models.Movie;
+const Users = Models.User;
+
+
+app.use(cors());
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect(process.env.MOVIEFLIX_URI, {useNewUrlParser: true, useUnifiedTopology: true });
 
-app.use(morgan('common'));
-
 app.use(bodyParser.json());
-
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const { check, validationResult } = require('express-validator'); //server-sided validation
-
-const cors = require('cors');
-
-app.use(cors());
-
-let auth = require('./auth');
-auth(app);
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 const passport = require('passport');
-
 require('./passport');
+
+let auth = require('./auth')(app);
+
+app.use(express.static('public'));
+app.use(morgan('common'));
+
 
 
 app.get('/',(req,res) => {
