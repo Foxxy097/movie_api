@@ -281,7 +281,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 });
 
 app.get('/', (req, res) => {
-  res.send('Welcome to Kino Noir!');
+  res.send('Welcome to MYFLIX');
 });
 
 /**
