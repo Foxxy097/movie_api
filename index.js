@@ -26,7 +26,8 @@ app.use(express.urlencoded({extended: true}));
 const passport = require('passport');
 require('./passport');
 
-let auth = require('./auth')(app);
+let auth = require('./auth');
+auth(app);
 
 app.use(express.static('public'));
 app.use(morgan('common'));
