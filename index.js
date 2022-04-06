@@ -76,7 +76,7 @@ const app = express();
 /**
  * http GET request to retrieve all movies from API
  */
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies', (req, res) => {
   Movies.find()
   .then((movies) => {
     res.status(201).json(movies);
