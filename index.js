@@ -61,7 +61,7 @@ const app = express();
 
   const passport = require('passport');
   require('./passport');
-  let auth = require('./auth');auth(app);
+  let auth = require('./auth')(app);
 
   
   app.use(express.json());
