@@ -59,10 +59,10 @@ const app = express();
   
   app.use(cors());
 
-  let auth = require('./auth')(app);
   const passport = require('passport');
   require('./passport');
-  
+  let auth = require('./auth')(app);
+
   
   app.use(express.json());
   app.use(express.static("public"));
